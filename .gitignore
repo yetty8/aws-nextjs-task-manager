@@ -1,6 +1,6 @@
 # See https://help.github.com/articles/ignoring-files/ for more about ignoring files.
 
-# dependencies
+# Dependencies
 /node_modules
 /.pnp
 .pnp.*
@@ -9,33 +9,81 @@
 !.yarn/plugins
 !.yarn/releases
 !.yarn/versions
+.pnp.js
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
 
-# testing
+# Testing
 /coverage
+/__tests__/
+*.test.*
+*.spec.*
 
-# next.js
+# Next.js
 /.next/
 /out/
-
-# production
 /build
+.next/cache/
 
-# misc
-.DS_Store
-*.pem
+# Production
+/dist
 
-# debug
+# Environment variables
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.development.local
+.env.test.local
+.env.production.local
+!.env.example
+
+# Debug logs
 npm-debug.log*
 yarn-debug.log*
 yarn-error.log*
 .pnpm-debug.log*
 
-# env files (can opt-in for committing if needed)
-.env*
+# System files
+.DS_Store
+*.pem
+*.p12
+*.key
+*.crt
 
-# vercel
+# Editor directories and files
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# VS Code
+.vscode
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/launch.json
+
+# Vercel
 .vercel
 
-# typescript
+# TypeScript
 *.tsbuildinfo
 next-env.d.ts
+
+# AWS CDK
+.cdk.staging/
+cdk.out/
+**/cdk.out/
+**/cdk.context.json
+**/*.js.map
+**/*.d.ts
+
+# Local development
+.aws-sam/
+.sst/
+.temp/
+.tmp/
