@@ -5,11 +5,6 @@ import { Zap, Shield, Rocket, Users, BarChart, Heart } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import Link from 'next/link';
 
-// Motion variants
-const fadeUp = {
-  initial: { opacity: 0, y: 20 },
-  animate: { opacity: 1, y: 0 },
-};
 
 const features = [
   {

@@ -87,3 +87,7 @@ cdk.out/
 .sst/
 .temp/
 .tmp/
+
+# Test artifacts
+/coverage
+.vitest

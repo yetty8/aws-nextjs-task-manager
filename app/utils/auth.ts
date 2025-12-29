@@ -1,52 +1,42 @@
 // app/utils/auth.ts
-import { SignJWT, jwtVerify } from 'jose';
+import jwt from 'jsonwebtoken';
+import { createHmac } from 'crypto';
 
-const secret = new TextEncoder().encode(process.env.JWT_SECRET || 'your-secret-key');
+const JWT_SECRET = process.env.JWT_SECRET || 'test-secret-key-for-testing-only-123456';
 
-export async function hashPassword(password: string): Promise<string> {
-  const encoder = new TextEncoder();
-  const data = encoder.encode(password);
-  const hashBuffer = await crypto.subtle.digest('SHA-256', data);
-  const hashArray = Array.from(new Uint8Array(hashBuffer));
-  const hashHex = hashArray
-    .map((b) => b.toString(16).padStart(2, '0'))
-    .join('');
-  console.log('Generated hash for password:', { password, hash: hashHex });
-  return hashHex;
-}
-
-export async function verifyPassword(
-  password: string, 
-  hashedPassword: string
-): Promise<boolean> {
+export function generateToken(payload: Record<string, any>): string {
   try {
-    const hashedInput = await hashPassword(password);
-    console.log('Comparing passwords:', {
-      inputHash: hashedInput,
-      storedHash: hashedPassword,
-      match: hashedInput === hashedPassword
+    return jwt.sign(payload, JWT_SECRET, {
+      expiresIn: '7d',
+      algorithm: 'HS256'
     });
-    return hashedInput === hashedPassword;
   } catch (error) {
-    console.error('Password verification error:', error);
-    return false;
+    console.error('Token generation failed:', error);
+    throw error;
   }
 }
 
-export async function generateToken(payload: any): Promise<string> {
-  return await new SignJWT(payload)
-    .setProtectedHeader({ alg: 'HS256' })
-    .setIssuedAt()
-    .setExpirationTime('7d')
-    .sign(secret);
-}
-
-export async function verifyToken(token: string): Promise<any> {
+export function verifyToken(token: string): any {
   try {
-    const { payload } = await jwtVerify(token, secret);
-    return payload;
+    return jwt.verify(token, JWT_SECRET, {
+      algorithms: ['HS256']
+    });
   } catch (error) {
     console.error('Token verification failed:', error);
-    throw new Error('Invalid or expired token');
+    return null;
   }
+}
+
+export function hashPassword(password: string): string {
+  return createHmac('sha256', JWT_SECRET)
+    .update(password)
+    .digest('hex');
+}
+
+export function verifyPassword(
+  password: string,
+  hashedPassword: string
+): boolean {
+  const hashed = hashPassword(password);
+  return hashed === hashedPassword;
 }

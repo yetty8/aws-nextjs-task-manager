@@ -98,7 +98,7 @@ function CTA({ isAuthenticated }: { isAuthenticated: boolean }) {
 
 // ---------- HomePage ----------
 export default function HomePage() {
-  const { data: session, status } = useSession();
+  const { data: _session, status } = useSession();
   const isAuthenticated = status === 'authenticated';
 
   return (

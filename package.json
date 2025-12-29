@@ -9,11 +9,9 @@
     "dev": "next dev --webpack",
     "build": "next build --webpack",
     "start": "next start",
-    "lint": "next lint",
-    "test": "vitest run",
-    "test:watch": "vitest",
-    "deploy:infra": "cd infrastructure && npm install && npx cdk deploy",
-    "deploy:app": "npm run build && aws s3 sync .next/static s3://your-bucket/_next/static --delete"
+    "lint": "next lint --dir .",
+    "test": "NODE_OPTIONS=--experimental-vm-modules vitest run",
+    "test:watch": "NODE_OPTIONS=--experimental-vm-modules vitest"
   },
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.958.0",
@@ -52,15 +50,19 @@
     "zod": "^4.2.1"
   },
   "devDependencies": {
+    "@testing-library/jest-dom": "^6.9.1",
+    "@testing-library/react": "^16.3.1",
     "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.0.3",
     "@types/react": "^18.2.7",
     "@types/react-dom": "^18.2.0",
     "@types/uuid": "^9.0.8",
+    "@vitejs/plugin-react": "^5.1.2",
     "autoprefixer": "^10.4.16",
     "eslint": "^9.39.2",
     "eslint-config-next": "16.1.1",
+    "jsdom": "^27.4.0",
     "postcss": "^8.4.32",
     "tailwindcss": "^3.4.0",
     "typescript": "^5.9.3",
