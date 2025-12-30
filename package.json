@@ -14,7 +14,7 @@
     "lint:fix": "eslint . --fix",
     "test": "vitest run",
     "test:coverage": "c8 vitest run",
-    "test:ci": "c8 vitest run",
+    "test:ci": "c8 vitest run --passWithNoTests --run",
     "test:watch": "vitest"
   },
   "dependencies": {

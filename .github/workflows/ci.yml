@@ -24,7 +24,7 @@ jobs:
       AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
       AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
       NEXTAUTH_URL: "http://localhost:3000"
-      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET || 'dummy-secret-for-testing' }}
       JWT_SECRET: "test-secret-key-for-testing-only-123456"
       VITEST_COVERAGE: "true"
 
@@ -38,25 +38,25 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: "npm"
 
-      - name: Cache Next.js build
+      - name: Cache dependencies and build
         uses: actions/cache@v4
         with:
           path: |
             .next/cache
             .turbo
-            node_modules/.vitest
+            node_modules
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
 
       - name: Install dependencies
-        run: npm ci
+        run: npm ci --prefer-offline
 
       - name: Debug file structure
         run: |
           pwd
           ls -la
-          find . -name "auth.test.ts" -o -name "*.test.ts"
+          find . -name "*.test.ts" -o -name "*.test.tsx" | sort
         if: always()
 
       - name: Run linter
@@ -64,9 +64,11 @@ jobs:
 
       - name: Run tests with coverage
         run: npm run test:ci
+        env:
+          NODE_OPTIONS: "--experimental-vm-modules"
 
       - name: Upload coverage to Codecov
-        if: success()
+        if: success() && github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: codecov/codecov-action@v4
         with:
           token: ${{ secrets.CODECOV_TOKEN || 'dummy-token' }}
