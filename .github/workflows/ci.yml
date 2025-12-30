@@ -25,7 +25,8 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
       NEXTAUTH_URL: 'http://localhost:3000'
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
-      JWT_SECRET: 'test-secret-key-for-testing-only-123456'  # Added for test environment
+      JWT_SECRET: 'test-secret-key-for-testing-only-123456'
+      VITEST_COVERAGE: 'true'
 
     steps:
       - name: Checkout repository
@@ -43,6 +44,7 @@ jobs:
           path: |
             .next/cache
             .turbo
+            node_modules/.vitest
           key: ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-${{ hashFiles('**/*.ts', '**/*.tsx') }}
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
@@ -60,8 +62,8 @@ jobs:
         if: success()
         uses: codecov/codecov-action@v4
         with:
-          token: ${{ secrets.CODECOV_TOKEN }}
-          file: ./coverage/lcov.info
+          token: ${{ secrets.CODECOV_TOKEN || 'dummy-token' }}
+          file: ./coverage/coverage-final.json
           fail_ci_if_error: false
 
       - name: Build application
@@ -72,5 +74,7 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           name: build-artifacts
-          path: .next
+          path: |
+            .next
+            coverage
           retention-days: 5

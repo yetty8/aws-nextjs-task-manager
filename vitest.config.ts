@@ -7,9 +7,15 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom',
+    environment: 'node',  // Changed from jsdom to node for backend tests
     setupFiles: './__tests__/setup.ts',
     include: ['**/*.test.ts', '**/*.test.tsx'],
+    coverage: {
+      provider: 'v8',
+      reporter: ['text', 'json', 'html'],
+      include: ['app/**/*.{ts,tsx}'],
+      exclude: ['**/node_modules/**', '**/__tests__/**', '**/*.d.ts'],
+    },
   },
   resolve: {
     alias: {

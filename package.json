@@ -5,14 +5,14 @@
   "browser": {
     "crypto": false
   },
-  "scripts": {
-    "dev": "next dev --webpack",
-    "build": "next build --webpack",
-    "start": "next start",
-    "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "test": "NODE_OPTIONS=--experimental-vm-modules vitest run",
-    "test:watch": "NODE_OPTIONS=--experimental-vm-modules vitest"
-  },
+"scripts": {
+  "dev": "next dev --webpack",
+  "build": "next build --webpack",
+  "start": "next start",
+  "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
+  "test": "NODE_OPTIONS=--experimental-vm-modules vitest run __tests__/**/*.test.{ts,tsx}",
+  "test:watch": "NODE_OPTIONS=--experimental-vm-modules vitest"
+},
   "dependencies": {
     "@aws-sdk/client-cognito-identity-provider": "^3.958.0",
     "@aws-sdk/client-dynamodb": "^3.958.0",
