@@ -12,6 +12,7 @@
   "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
   "test": "NODE_OPTIONS=--experimental-vm-modules vitest run",
   "test:coverage": "NODE_OPTIONS=--experimental-vm-modules vitest run --coverage",
+  "test:ci": "NODE_OPTIONS=--experimental-vm-modules vitest run --coverage --testPathPattern=__tests__/utils/auth.test.ts",
   "test:watch": "NODE_OPTIONS=--experimental-vm-modules vitest"
 },
   "dependencies": {
