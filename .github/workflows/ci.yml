@@ -52,11 +52,18 @@ jobs:
       - name: Install dependencies
         run: npm ci
 
+      - name: Debug file structure
+        run: |
+          pwd
+          ls -la
+          find . -name "*.test.ts" -o -name "*.test.tsx"
+        if: always()
+
       - name: Run linter
         run: npm run lint
 
       - name: Run tests with coverage
-        run: npm run test:coverage
+        run: npm run test:ci
 
       - name: Upload coverage to Codecov
         if: success()
