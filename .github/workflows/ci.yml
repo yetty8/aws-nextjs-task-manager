@@ -56,7 +56,7 @@ jobs:
         run: |
           pwd
           ls -la
-          find . -name "*.test.ts" -o -name "*.test.tsx"
+          find . -name "auth.test.ts" -o -name "*.test.ts"
         if: always()
 
       - name: Run linter
