@@ -7,14 +7,23 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'node',  // Changed from jsdom to node for backend tests
+    environment: 'node',
     setupFiles: './__tests__/setup.ts',
-    include: ['**/*.test.ts', '**/*.test.tsx'],
+    include: ['**/__tests__/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
       include: ['app/**/*.{ts,tsx}'],
-      exclude: ['**/node_modules/**', '**/__tests__/**', '**/*.d.ts'],
+      exclude: [
+        '**/node_modules/**',
+        '**/__tests__/**',
+        '**/*.d.ts',
+        '**/types/**',
+        '**/app/layout.tsx',
+        '**/app/error.tsx',
+        '**/app/not-found.tsx',
+        '**/app/loading.tsx'
+      ],
     },
   },
   resolve: {

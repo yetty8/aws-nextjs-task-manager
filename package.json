@@ -10,7 +10,8 @@
   "build": "next build --webpack",
   "start": "next start",
   "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-  "test": "NODE_OPTIONS=--experimental-vm-modules vitest run __tests__/**/*.test.{ts,tsx}",
+  "test": "NODE_OPTIONS=--experimental-vm-modules vitest run",
+  "test:coverage": "NODE_OPTIONS=--experimental-vm-modules vitest run --coverage",
   "test:watch": "NODE_OPTIONS=--experimental-vm-modules vitest"
 },
   "dependencies": {
