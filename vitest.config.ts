@@ -7,13 +7,13 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'node',  // Keep as 'node' since we're testing backend utilities
+    environment: 'node',
     setupFiles: './__tests__/setup.ts',
     include: ['**/__tests__/**/*.test.{ts,tsx}'],
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
-      include: ['app/utils/**/*.ts'],  // Focus on the utils we're testing
+      include: ['app/utils/**/*.ts'],
       exclude: [
         '**/node_modules/**',
         '**/__tests__/**',
