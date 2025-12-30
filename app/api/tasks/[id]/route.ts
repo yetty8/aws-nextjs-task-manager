@@ -1,4 +1,5 @@
-import { NextResponse } from "next/server";
+// app/api/tasks/[id]/route.ts
+import { NextRequest, NextResponse } from "next/server";
 import { getServerSession } from "next-auth/next";
 import { authOptions } from "@/lib/auth";
 import {
@@ -39,12 +40,18 @@ async function getTaskId(params: { id: string } | Promise<{ id: string }>) {
   return resolved.id;
 }
 
-// GET /api/tasks/[id]
-export async function GET(_request: Request, { params }: { params: { id: string } }) {
+// ---------------------
+// GET /api/tasks/[id] - Get a single task
+// ---------------------
+export async function GET(
+  _req: NextRequest,
+  { params }: { params: { id: string } }
+) {
   try {
     const taskId = await getTaskId(params);
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user?.email)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
     const { Item } = await client.send(
       new GetItemCommand({ TableName: TABLE_NAME, Key: marshall({ id: taskId }) })
@@ -52,33 +59,43 @@ export async function GET(_request: Request, { params }: { params: { id: string 
     if (!Item) return NextResponse.json({ error: "Task not found" }, { status: 404 });
 
     const task: Task = unmarshall(Item) as Task;
-    if (task.userId !== session.user.email) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (task.userId !== session.user.email)
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     return NextResponse.json(task);
   } catch (error: any) {
     console.error("GET error:", error);
-    return NextResponse.json({ error: error.message || "Failed to fetch task" }, { status: 500 });
+    return NextResponse.json(
+      { error: error.message || "Failed to fetch task" },
+      { status: 500 }
+    );
   }
 }
 
-// PATCH /api/tasks/[id]
+// ---------------------
+// PATCH /api/tasks/[id] - Update a task
+// ---------------------
 export async function PATCH(
-  request: Request,
+  req: NextRequest,
   { params }: { params: { id: string } | Promise<{ id: string }> }
 ) {
   try {
     const taskId = await getTaskId(params);
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user?.email)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const body = (await request.json().catch(() => null)) as Partial<Task> | null;
+    const body = (await req.json().catch(() => null)) as Partial<Task> | null;
     if (!body) return NextResponse.json({ error: "Invalid request body" }, { status: 400 });
 
-    const { Item } = await client.send(new GetItemCommand({ TableName: TABLE_NAME, Key: marshall({ id: taskId }) }));
+    const { Item } = await client.send(
+      new GetItemCommand({ TableName: TABLE_NAME, Key: marshall({ id: taskId }) })
+    );
     if (!Item) return NextResponse.json({ error: "Task not found" }, { status: 404 });
 
     const existingTask: Task = unmarshall(Item) as Task;
-    if (existingTask.userId !== session.user.email) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (existingTask.userId !== session.user.email)
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     const updates: string[] = [];
     const exprValues: Record<string, any> = {};
@@ -97,7 +114,8 @@ export async function PATCH(
     exprValues[":updatedAt"] = new Date().toISOString();
     exprNames["#updatedAt"] = "updatedAt";
 
-    if (!updates.length) return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
+    if (!updates.length)
+      return NextResponse.json({ error: "No valid fields to update" }, { status: 400 });
 
     const { Attributes } = await client.send(
       new UpdateItemCommand({
@@ -118,21 +136,27 @@ export async function PATCH(
   }
 }
 
-// DELETE /api/tasks/[id]
+// ---------------------
+// DELETE /api/tasks/[id] - Delete a task
+// ---------------------
 export async function DELETE(
-  _request: Request,
+  _req: NextRequest,
   { params }: { params: { id: string } | Promise<{ id: string }> }
 ) {
   try {
     const taskId = await getTaskId(params);
     const session = await getServerSession(authOptions);
-    if (!session?.user?.email) return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+    if (!session?.user?.email)
+      return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
 
-    const { Item } = await client.send(new GetItemCommand({ TableName: TABLE_NAME, Key: marshall({ id: taskId }) }));
+    const { Item } = await client.send(
+      new GetItemCommand({ TableName: TABLE_NAME, Key: marshall({ id: taskId }) })
+    );
     if (!Item) return NextResponse.json({ error: "Task not found" }, { status: 404 });
 
     const task: Task = unmarshall(Item) as Task;
-    if (task.userId !== session.user.email) return NextResponse.json({ error: "Forbidden" }, { status: 403 });
+    if (task.userId !== session.user.email)
+      return NextResponse.json({ error: "Forbidden" }, { status: 403 });
 
     await client.send(new DeleteItemCommand({ TableName: TABLE_NAME, Key: marshall({ id: taskId }) }));
 

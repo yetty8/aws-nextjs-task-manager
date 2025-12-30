@@ -121,7 +121,7 @@ function CTA({ isAuthenticated }: { isAuthenticated: boolean }) {
 
 // ---------- HomePage ----------
 export default function HomePage() {
-  const { data: _session, status } = useSession();
+  const { data: _session, status } = useSession(); // _session is intentionally unused
   const isAuthenticated = status === "authenticated";
 
   return (
