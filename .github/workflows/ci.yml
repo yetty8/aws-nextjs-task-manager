@@ -25,6 +25,7 @@ jobs:
       AWS_REGION: ${{ secrets.AWS_REGION || 'us-east-1' }}
       NEXTAUTH_URL: 'http://localhost:3000'
       NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+      JWT_SECRET: 'test-secret-key-for-testing-only-123456'  # Added for test environment
 
     steps:
       - name: Checkout repository
@@ -53,7 +54,7 @@ jobs:
         run: npm run lint
 
       - name: Run tests with coverage
-        run: npm test -- --coverage --runInBand
+        run: npm test -- --coverage
 
       - name: Upload coverage to Codecov
         if: success()
