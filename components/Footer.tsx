@@ -1,9 +1,9 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import { motion } from 'framer-motion';
-import { Github, Linkedin, Mail } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import Link from "next/link";
+import { motion } from "framer-motion";
+import { Github, Linkedin, Mail } from "lucide-react";
+import { Button } from "@/components/ui/button";
 
 const footerVariants = {
   hidden: { opacity: 0, y: 20 },
@@ -12,49 +12,49 @@ const footerVariants = {
     y: 0,
     transition: {
       duration: 0.5,
-      staggerChildren: 0.1
-    }
-  }
+      staggerChildren: 0.1,
+    },
+  },
 };
 
 const itemVariants = {
   hidden: { opacity: 0, y: 10 },
-  visible: { opacity: 1, y: 0 }
+  visible: { opacity: 1, y: 0 },
 };
 
 export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   const navLinks = [
-    { name: 'About', href: '/about' },
-    { name: 'Privacy', href: '/privacy' },
-    { name: 'Terms', href: '/terms' },
-    { name: 'Contact', href: '/contact' },
+    { name: "About", href: "/about" },
+    { name: "Privacy", href: "/privacy" },
+    { name: "Terms", href: "/terms" },
+    { name: "Contact", href: "/contact" },
   ];
 
   const socialLinks = [
-    { 
-      icon: <Github className="h-6 w-6" />, 
-      href: 'https://github.com/yetty8', 
-      label: 'GitHub',
-      color: 'hover:text-gray-900 dark:hover:text-white'
+    {
+      icon: <Github className="h-6 w-6" />,
+      href: "https://github.com/yetty8",
+      label: "GitHub",
+      color: "hover:text-gray-900 dark:hover:text-white",
     },
-    { 
-      icon: <Linkedin className="h-6 w-6" />, 
-      href: 'https://www.linkedin.com/in/yetbarek-temesgen/', 
-      label: 'LinkedIn',
-      color: 'hover:text-blue-600 dark:hover:text-blue-400'
+    {
+      icon: <Linkedin className="h-6 w-6" />,
+      href: "https://www.linkedin.com/in/yetbarek-temesgen/",
+      label: "LinkedIn",
+      color: "hover:text-blue-600 dark:hover:text-blue-400",
     },
-    { 
-      icon: <Mail className="h-6 w-6" />, 
-      href: 'mailto:yetbarek.tech@gmail.com', 
-      label: 'Email',
-      color: 'hover:text-rose-600 dark:hover:text-rose-400'
+    {
+      icon: <Mail className="h-6 w-6" />,
+      href: "mailto:yetbarek.tech@gmail.com",
+      label: "Email",
+      color: "hover:text-rose-600 dark:hover:text-rose-400",
     },
   ];
 
   return (
-    <motion.footer 
+    <motion.footer
       initial="hidden"
       whileInView="visible"
       viewport={{ once: true, margin: "0px 0px -100px" }}
@@ -71,7 +71,8 @@ export default function Footer() {
               </span>
             </Link>
             <p className="text-gray-600 dark:text-gray-400 text-base">
-              A modern task management solution to help you stay organized and productive.
+              A modern task management solution to help you stay organized and
+              productive.
             </p>
             <div className="flex space-x-2 pt-2">
               {socialLinks.map((social) => (
@@ -102,10 +103,10 @@ export default function Footer() {
             </h3>
             <ul className="space-y-2">
               {navLinks.map((link) => (
-                <motion.li 
+                <motion.li
                   key={link.href}
                   whileHover={{ x: 4 }}
-                  transition={{ type: 'spring', stiffness: 300 }}
+                  transition={{ type: "spring", stiffness: 300 }}
                 >
                   <Link
                     href={link.href}
@@ -126,8 +127,8 @@ export default function Footer() {
             <ul className="space-y-3 text-base text-gray-600 dark:text-gray-400">
               <li className="flex items-start py-1">
                 <Mail className="h-5 w-5 text-gray-400 mr-3 mt-1 flex-shrink-0" />
-                <a 
-                  href="mailto:yetbarek.tech@gmail.com" 
+                <a
+                  href="mailto:yetbarek.tech@gmail.com"
                   className="hover:underline break-all"
                 >
                   yetbarek.tech@gmail.com
@@ -135,8 +136,8 @@ export default function Footer() {
               </li>
               <li className="flex items-start py-1">
                 <Linkedin className="h-5 w-5 text-gray-400 mr-3 mt-1 flex-shrink-0" />
-                <a 
-                  href="https://www.linkedin.com/in/yetbarek-temesgen/" 
+                <a
+                  href="https://www.linkedin.com/in/yetbarek-temesgen/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="hover:underline"
@@ -148,8 +149,8 @@ export default function Footer() {
           </motion.div>
 
           {/* Newsletter */}
-          <motion.div 
-            variants={itemVariants} 
+          <motion.div
+            variants={itemVariants}
             className="space-y-4 md:col-span-2 lg:col-span-1"
           >
             <h3 className="text-sm font-semibold text-gray-900 dark:text-white uppercase tracking-wider">
@@ -177,14 +178,14 @@ export default function Footer() {
         </div>
 
         {/* Copyright */}
-        <motion.div 
+        <motion.div
           variants={itemVariants}
           className="mt-12 pt-8 border-t border-gray-200 dark:border-gray-800"
         >
           <p className="text-sm text-center text-gray-500 dark:text-gray-400">
-            &copy; {currentYear} TaskFlow. All rights reserved. Made with ❤️ by{' '}
-            <a 
-              href="https://www.linkedin.com/in/yetbarek-temesgen/" 
+            &copy; {currentYear} TaskFlow. All rights reserved. Made with ❤️ by{" "}
+            <a
+              href="https://www.linkedin.com/in/yetbarek-temesgen/"
               target="_blank"
               rel="noopener noreferrer"
               className="font-medium text-blue-600 hover:underline dark:text-blue-400"

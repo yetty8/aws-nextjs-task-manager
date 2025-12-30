@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
-import Link from 'next/link';
-import SignupForm from '@/components/auth/SignupForm';
+import Link from "next/link";
+import SignupForm from "@/components/auth/SignupForm";
 
 export default function SignupPage() {
   return (
@@ -12,9 +12,9 @@ export default function SignupPage() {
             Create a new account
           </h2>
           <p className="mt-2 text-sm text-gray-600 dark:text-gray-400">
-            Or{' '}
-            <Link 
-              href="/login" 
+            Or{" "}
+            <Link
+              href="/login"
               className="font-medium text-indigo-600 hover:text-indigo-500 dark:text-indigo-400 dark:hover:text-indigo-300"
             >
               sign in to your account

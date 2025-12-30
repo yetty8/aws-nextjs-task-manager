@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { useState, useEffect, useCallback } from 'react';
-import { useSession } from 'next-auth/react';
-import { useRouter } from 'next/navigation';
-import { motion, AnimatePresence } from 'framer-motion';
-import { Plus, Loader2, Trash2, Check, Edit } from 'lucide-react';
+import { useState, useEffect, useCallback } from "react";
+import { useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { motion, AnimatePresence } from "framer-motion";
+import { Plus, Loader2, Trash2, Check, Edit } from "lucide-react";
 
 interface Task {
   id: string;
@@ -20,35 +20,35 @@ export default function Tasks() {
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [updatingTaskIds, setUpdatingTaskIds] = useState<string[]>([]);
-  const [newTask, setNewTask] = useState('');
-  const [newDescription, setNewDescription] = useState('');
+  const [newTask, setNewTask] = useState("");
+  const [newDescription, setNewDescription] = useState("");
   const { data: session, status } = useSession();
   const router = useRouter();
 
   const fetchTasks = useCallback(async () => {
-    if (status === 'unauthenticated') {
-      router.push('/login');
+    if (status === "unauthenticated") {
+      router.push("/login");
       return;
     }
-    if (status === 'loading' || !session?.user?.email) return;
+    if (status === "loading" || !session?.user?.email) return;
 
     try {
       setIsLoading(true);
-      const res = await fetch('/api/tasks', { 
-        credentials: 'include',
-        cache: 'no-store'
+      const res = await fetch("/api/tasks", {
+        credentials: "include",
+        cache: "no-store",
       });
-      
+
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
-        throw new Error(error.message || 'Failed to fetch tasks');
+        throw new Error(error.message || "Failed to fetch tasks");
       }
-      
+
       const data = await res.json();
       setTasks(Array.isArray(data) ? data : []);
     } catch (err: any) {
-      console.error('Error fetching tasks:', err);
-      alert(err?.message || 'Failed to load tasks. Please try again.');
+      console.error("Error fetching tasks:", err);
+      alert(err?.message || "Failed to load tasks. Please try again.");
     } finally {
       setIsLoading(false);
     }
@@ -67,119 +67,123 @@ export default function Tasks() {
       title: newTask,
       description: newDescription,
       completed: false,
-      userId: session?.user?.email || '',
+      userId: session?.user?.email || "",
       createdAt: new Date().toISOString(),
-      updatedAt: new Date().toISOString()
+      updatedAt: new Date().toISOString(),
     };
 
-    setTasks(prev => [...prev, newTaskItem]);
-    setNewTask('');
-    setNewDescription('');
+    setTasks((prev) => [...prev, newTaskItem]);
+    setNewTask("");
+    setNewDescription("");
 
     try {
-      const res = await fetch('/api/tasks', {
-        method: 'POST',
-        headers: { 
-          'Content-Type': 'application/json',
+      const res = await fetch("/api/tasks", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
         },
-        body: JSON.stringify({ 
-          title: newTaskItem.title, 
-          description: newTaskItem.description 
+        body: JSON.stringify({
+          title: newTaskItem.title,
+          description: newTaskItem.description,
         }),
-        credentials: 'include'
+        credentials: "include",
       });
 
       const data = await res.json();
-      
+
       if (!res.ok) {
-        throw new Error(data.error || 'Failed to add task');
+        throw new Error(data.error || "Failed to add task");
       }
 
-      setTasks(prev => 
-        prev.map(t => t.id === tempId ? { ...data, userId: session?.user?.email || '' } : t)
+      setTasks((prev) =>
+        prev.map((t) =>
+          t.id === tempId ? { ...data, userId: session?.user?.email || "" } : t,
+        ),
       );
     } catch (err: any) {
-      console.error('Add task error:', err);
-      setTasks(prev => prev.filter(t => t.id !== tempId));
-      alert(err?.message || 'Failed to add task. Please try again.');
+      console.error("Add task error:", err);
+      setTasks((prev) => prev.filter((t) => t.id !== tempId));
+      alert(err?.message || "Failed to add task. Please try again.");
     }
   };
 
   const toggleTaskCompletion = async (task: Task) => {
     if (!task?.id) {
-      console.error('Cannot toggle task: No task ID');
+      console.error("Cannot toggle task: No task ID");
       return;
     }
 
     const taskId = task.id;
     const previousTasks = [...tasks];
     const updatedTask = { ...task, completed: !task.completed };
-    
-    setTasks(prev => prev.map(t => t.id === taskId ? updatedTask : t));
-    setUpdatingTaskIds(prev => [...prev, taskId]);
+
+    setTasks((prev) => prev.map((t) => (t.id === taskId ? updatedTask : t)));
+    setUpdatingTaskIds((prev) => [...prev, taskId]);
 
     try {
       const res = await fetch(`/api/tasks/${encodeURIComponent(taskId)}`, {
-        method: 'PATCH',
-        headers: { 
-          'Content-Type': 'application/json',
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          completed: updatedTask.completed
+          completed: updatedTask.completed,
         }),
-        credentials: 'include'
+        credentials: "include",
       });
 
       if (!res.ok) {
         const error = await res.json().catch(() => ({}));
-        throw new Error(error.message || 'Failed to update task');
+        throw new Error(error.message || "Failed to update task");
       }
 
       const data = await res.json();
-      setTasks(prev => prev.map(t => t.id === taskId ? { ...t, ...data } : t));
+      setTasks((prev) =>
+        prev.map((t) => (t.id === taskId ? { ...t, ...data } : t)),
+      );
     } catch (err: any) {
-      console.error('Toggle failed, reverting:', err);
+      console.error("Toggle failed, reverting:", err);
       setTasks(previousTasks);
-      alert(err?.message || 'Failed to update task. Please try again.');
+      alert(err?.message || "Failed to update task. Please try again.");
     } finally {
-      setUpdatingTaskIds(prev => prev.filter(id => id !== taskId));
+      setUpdatingTaskIds((prev) => prev.filter((id) => id !== taskId));
     }
   };
 
   const deleteTask = async (id: string) => {
     if (!id) {
-      console.error('Cannot delete task: No task ID');
+      console.error("Cannot delete task: No task ID");
       return;
     }
 
-    if (!window.confirm('Are you sure you want to delete this task?')) {
+    if (!window.confirm("Are you sure you want to delete this task?")) {
       return;
     }
 
     const previousTasks = [...tasks];
-    setTasks(prev => prev.filter(task => task.id !== id));
-    setUpdatingTaskIds(prev => [...prev, id]);
+    setTasks((prev) => prev.filter((task) => task.id !== id));
+    setUpdatingTaskIds((prev) => [...prev, id]);
 
     try {
-      const res = await fetch(`/api/tasks/${encodeURIComponent(id)}`, { 
-        method: 'DELETE',
-        credentials: 'include'
+      const res = await fetch(`/api/tasks/${encodeURIComponent(id)}`, {
+        method: "DELETE",
+        credentials: "include",
       });
-      
+
       if (!res.ok) {
         const errorData = await res.json().catch(() => ({}));
-        throw new Error(errorData.error || 'Failed to delete task');
+        throw new Error(errorData.error || "Failed to delete task");
       }
     } catch (err: any) {
-      console.error('Delete failed, reverting:', err);
+      console.error("Delete failed, reverting:", err);
       setTasks(previousTasks);
-      alert(err?.message || 'Failed to delete task. Please try again.');
+      alert(err?.message || "Failed to delete task. Please try again.");
     } finally {
-      setUpdatingTaskIds(prev => prev.filter(taskId => taskId !== id));
+      setUpdatingTaskIds((prev) => prev.filter((taskId) => taskId !== id));
     }
   };
 
-  if (status === 'loading' || isLoading) {
+  if (status === "loading" || isLoading) {
     return (
       <div className="flex items-center justify-center h-64">
         <Loader2 className="w-8 h-8 animate-spin text-blue-500" />
@@ -195,7 +199,7 @@ export default function Tasks() {
             type="text"
             value={newTask}
             onChange={(e) => setNewTask(e.target.value)}
-            onKeyDown={(e) => e.key === 'Enter' && addTask()}
+            onKeyDown={(e) => e.key === "Enter" && addTask()}
             placeholder="Add a new task..."
             className="flex-1 p-2 border rounded dark:bg-gray-800 dark:border-gray-700"
             disabled={updatingTaskIds.length > 0}
@@ -208,7 +212,7 @@ export default function Tasks() {
             {updatingTaskIds.length > 0 ? (
               <Loader2 className="w-4 h-4 animate-spin" />
             ) : (
-              'Add'
+              "Add"
             )}
           </button>
         </div>
@@ -225,13 +229,13 @@ export default function Tasks() {
       <motion.ul className="space-y-3">
         <AnimatePresence>
           {tasks.length === 0 ? (
-            <motion.li 
+            <motion.li
               className="text-center py-10 text-gray-500"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
             >
-              {isLoading ? 'Loading tasks...' : 'No tasks yet. Add one above!'}
+              {isLoading ? "Loading tasks..." : "No tasks yet. Add one above!"}
             </motion.li>
           ) : (
             tasks.map((task) => (
@@ -241,9 +245,9 @@ export default function Tasks() {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, x: -100 }}
                 className={`p-4 rounded-lg border ${
-                  task.completed 
-                    ? 'bg-gray-100 dark:bg-gray-800' 
-                    : 'bg-white dark:bg-gray-900'
+                  task.completed
+                    ? "bg-gray-100 dark:bg-gray-800"
+                    : "bg-white dark:bg-gray-900"
                 }`}
               >
                 <div className="flex items-start gap-3">
@@ -252,8 +256,8 @@ export default function Tasks() {
                     disabled={updatingTaskIds.includes(task.id)}
                     className={`p-1.5 rounded-full mt-0.5 transition-colors ${
                       task.completed
-                        ? 'bg-green-100 text-green-600 dark:bg-green-900/30'
-                        : 'border border-gray-300 dark:border-gray-600'
+                        ? "bg-green-100 text-green-600 dark:bg-green-900/30"
+                        : "border border-gray-300 dark:border-gray-600"
                     }`}
                   >
                     {updatingTaskIds.includes(task.id) ? (
@@ -262,18 +266,18 @@ export default function Tasks() {
                       <Check size={16} />
                     ) : null}
                   </button>
-                  
-                  <div 
+
+                  <div
                     className={`flex-1 min-w-0 cursor-pointer ${
-                      task.completed ? 'opacity-75' : ''
+                      task.completed ? "opacity-75" : ""
                     }`}
                     onClick={() => router.push(`/tasks/edit/${task.id}`)}
                   >
                     <h3
                       className={`text-lg font-medium ${
-                        task.completed 
-                          ? 'line-through text-gray-500' 
-                          : 'text-gray-900 dark:text-white'
+                        task.completed
+                          ? "line-through text-gray-500"
+                          : "text-gray-900 dark:text-white"
                       }`}
                     >
                       {task.title}

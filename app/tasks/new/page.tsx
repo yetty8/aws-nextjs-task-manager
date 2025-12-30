@@ -1,14 +1,14 @@
-'use client';
+"use client";
 
-import { useState } from 'react';
-import { useRouter } from 'next/navigation';
-import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { Textarea } from '@/components/ui/textarea';
+import { useState } from "react";
+import { useRouter } from "next/navigation";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
+import { Textarea } from "@/components/ui/textarea";
 
 export default function NewTaskPage() {
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
   const [loading, setLoading] = useState(false);
   const router = useRouter();
 
@@ -18,25 +18,25 @@ export default function NewTaskPage() {
 
     setLoading(true);
     try {
-      const res = await fetch('/api/tasks', {
-        method: 'POST',
+      const res = await fetch("/api/tasks", {
+        method: "POST",
         headers: {
-          'Content-Type': 'application/json',
+          "Content-Type": "application/json",
         },
         body: JSON.stringify({ title, description }),
       });
 
       if (!res.ok) {
-        throw new Error('Failed to create task');
+        throw new Error("Failed to create task");
       }
 
       // Redirect to tasks page after successful creation
-      router.push('/tasks');
+      router.push("/tasks");
       // Optional: Refresh the tasks list
       router.refresh();
     } catch (error) {
-      console.error('Failed to create task:', error);
-      alert('Failed to create task. Please try again.');
+      console.error("Failed to create task:", error);
+      alert("Failed to create task. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -46,10 +46,13 @@ export default function NewTaskPage() {
   return (
     <div className="container mx-auto px-4 py-8 max-w-2xl">
       <h1 className="text-2xl font-bold mb-6">Create New Task</h1>
-      
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            htmlFor="title"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
             Title
           </label>
           <Input
@@ -65,7 +68,10 @@ export default function NewTaskPage() {
         </div>
 
         <div>
-          <label htmlFor="description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+          <label
+            htmlFor="description"
+            className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1"
+          >
             Description
           </label>
           <Textarea
@@ -89,7 +95,7 @@ export default function NewTaskPage() {
             Cancel
           </Button>
           <Button type="submit" disabled={!title.trim() || loading}>
-            {loading ? 'Creating...' : 'Create Task'}
+            {loading ? "Creating..." : "Create Task"}
           </Button>
         </div>
       </form>

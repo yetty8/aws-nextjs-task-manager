@@ -1,49 +1,50 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { Zap, Shield, Rocket, Users, BarChart, Heart } from 'lucide-react';
-import { Button } from '@/components/ui/button';
-import Link from 'next/link';
-
+import { motion } from "framer-motion";
+import { Zap, Shield, Rocket, Users, BarChart, Heart } from "lucide-react";
+import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 const features = [
   {
-    title: 'Simple & Intuitive',
-    description: 'Designed with a clean interface that makes task management a breeze.',
+    title: "Simple & Intuitive",
+    description:
+      "Designed with a clean interface that makes task management a breeze.",
     icon: Zap,
   },
   {
-    title: 'Secure & Private',
-    description: 'Your data is encrypted and only accessible by you.',
+    title: "Secure & Private",
+    description: "Your data is encrypted and only accessible by you.",
     icon: Shield,
   },
   {
-    title: 'Cross-Platform',
-    description: 'Access your tasks from any device, anywhere, anytime.',
+    title: "Cross-Platform",
+    description: "Access your tasks from any device, anywhere, anytime.",
     icon: Rocket,
   },
   {
-    title: 'Team Ready',
-    description: 'Perfect for both personal use and team collaboration.',
+    title: "Team Ready",
+    description: "Perfect for both personal use and team collaboration.",
     icon: Users,
   },
   {
-    title: 'Productivity Boost',
-    description: 'Stay on top of your work with smart organization features.',
+    title: "Productivity Boost",
+    description: "Stay on top of your work with smart organization features.",
     icon: BarChart,
   },
   {
-    title: 'Built with Love',
-    description: 'Crafted with care to make your life easier.',
+    title: "Built with Love",
+    description: "Crafted with care to make your life easier.",
     icon: Heart,
   },
 ];
 
 const team = [
   {
-    name: 'TaskFlow Team',
-    role: 'Passionate Developers',
-    description: 'We believe in creating tools that make a real difference in people\'s lives.',
+    name: "TaskFlow Team",
+    role: "Passionate Developers",
+    description:
+      "We believe in creating tools that make a real difference in people's lives.",
   },
 ];
 
@@ -83,9 +84,9 @@ export default function AboutPage() {
               Our Mission
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-4xl mx-auto">
-              At TaskFlow, we believe that the right tools can transform the way you work. 
-              Our mission is to provide a seamless, intuitive task management experience 
-              that helps you focus on what truly matters.
+              At TaskFlow, we believe that the right tools can transform the way
+              you work. Our mission is to provide a seamless, intuitive task
+              management experience that helps you focus on what truly matters.
             </p>
           </motion.div>
 
@@ -150,7 +151,9 @@ export default function AboutPage() {
                   <h3 className="text-xl font-semibold text-gray-900 dark:text-white">
                     {member.name}
                   </h3>
-                  <p className="text-blue-600 dark:text-blue-400 mb-4">{member.role}</p>
+                  <p className="text-blue-600 dark:text-blue-400 mb-4">
+                    {member.role}
+                  </p>
                   <p className="text-gray-600 dark:text-gray-400">
                     {member.description}
                   </p>
@@ -181,9 +184,7 @@ export default function AboutPage() {
               size="lg"
               className="bg-white text-blue-600 hover:bg-blue-50 text-lg"
             >
-              <Link href="/signup">
-                Get Started for Free
-              </Link>
+              <Link href="/signup">Get Started for Free</Link>
             </Button>
           </motion.div>
         </div>

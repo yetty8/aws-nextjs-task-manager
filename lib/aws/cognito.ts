@@ -1,4 +1,3 @@
-
 import {
   CognitoIdentityProviderClient,
   SignUpCommand,
@@ -7,7 +6,7 @@ import {
   ResendConfirmationCodeCommand,
   ForgotPasswordCommand,
   ConfirmForgotPasswordCommand,
-} from '@aws-sdk/client-cognito-identity-provider';
+} from "@aws-sdk/client-cognito-identity-provider";
 
 const client = new CognitoIdentityProviderClient({
   region: process.env.NEXT_PUBLIC_AWS_REGION,
@@ -27,7 +26,7 @@ export async function signUp(email: string, password: string) {
     Password: password,
     UserAttributes: [
       {
-        Name: 'email',
+        Name: "email",
         Value: email,
       },
     ],
@@ -36,7 +35,7 @@ export async function signUp(email: string, password: string) {
   try {
     return await client.send(command);
   } catch (error) {
-    console.error('Error signing up:', error);
+    console.error("Error signing up:", error);
     throw error;
   }
 }
@@ -51,14 +50,14 @@ export async function confirmSignUp(email: string, code: string) {
   try {
     return await client.send(command);
   } catch (error) {
-    console.error('Error confirming sign up:', error);
+    console.error("Error confirming sign up:", error);
     throw error;
   }
 }
 
 export async function signIn(email: string, password: string) {
   const command = new InitiateAuthCommand({
-    AuthFlow: 'USER_PASSWORD_AUTH',
+    AuthFlow: "USER_PASSWORD_AUTH",
     ClientId: clientId,
     AuthParameters: {
       USERNAME: email,
@@ -70,7 +69,7 @@ export async function signIn(email: string, password: string) {
     const response = await client.send(command);
     return response.AuthenticationResult;
   } catch (error) {
-    console.error('Error signing in:', error);
+    console.error("Error signing in:", error);
     throw error;
   }
 }
@@ -84,7 +83,7 @@ export async function resendConfirmationCode(email: string) {
   try {
     return await client.send(command);
   } catch (error) {
-    console.error('Error resending confirmation code:', error);
+    console.error("Error resending confirmation code:", error);
     throw error;
   }
 }
@@ -98,7 +97,7 @@ export async function forgotPassword(email: string) {
   try {
     return await client.send(command);
   } catch (error) {
-    console.error('Error requesting password reset:', error);
+    console.error("Error requesting password reset:", error);
     throw error;
   }
 }
@@ -106,7 +105,7 @@ export async function forgotPassword(email: string) {
 export async function confirmForgotPassword(
   email: string,
   code: string,
-  newPassword: string
+  newPassword: string,
 ) {
   const command = new ConfirmForgotPasswordCommand({
     ClientId: clientId,
@@ -118,7 +117,7 @@ export async function confirmForgotPassword(
   try {
     return await client.send(command);
   } catch (error) {
-    console.error('Error confirming password reset:', error);
+    console.error("Error confirming password reset:", error);
     throw error;
   }
 }

@@ -1,10 +1,10 @@
-'use client';
+"use client";
 
-import { motion } from 'framer-motion';
-import { useSession } from 'next-auth/react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { ArrowRight, Zap, Rocket, Shield } from 'lucide-react';
+import { motion } from "framer-motion";
+import { useSession } from "next-auth/react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { ArrowRight, Zap, Rocket, Shield } from "lucide-react";
 
 // ---------- Motion Variants ----------
 const fadeUp = {
@@ -14,13 +14,32 @@ const fadeUp = {
 
 // ---------- Features ----------
 const features = [
-  { name: 'Lightning Fast', description: 'Quickly add and manage your tasks with our intuitive interface', icon: Zap },
-  { name: 'Secure & Private', description: 'Your data is encrypted and only accessible by you', icon: Shield },
-  { name: 'Cross-Platform', description: 'Access your tasks from any device, anywhere', icon: Rocket },
+  {
+    name: "Lightning Fast",
+    description:
+      "Quickly add and manage your tasks with our intuitive interface",
+    icon: Zap,
+  },
+  {
+    name: "Secure & Private",
+    description: "Your data is encrypted and only accessible by you",
+    icon: Shield,
+  },
+  {
+    name: "Cross-Platform",
+    description: "Access your tasks from any device, anywhere",
+    icon: Rocket,
+  },
 ];
 
 // ---------- FeatureCard Component ----------
-function FeatureCard({ feature, index }: { feature: typeof features[0]; index: number }) {
+function FeatureCard({
+  feature,
+  index,
+}: {
+  feature: (typeof features)[0];
+  index: number;
+}) {
   return (
     <motion.div
       key={feature.name}
@@ -36,8 +55,12 @@ function FeatureCard({ feature, index }: { feature: typeof features[0]; index: n
       >
         <feature.icon className="h-6 w-6" />
       </div>
-      <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white">{feature.name}</h3>
-      <p className="mt-2 text-base text-gray-500 dark:text-gray-400">{feature.description}</p>
+      <h3 className="mt-8 text-lg font-medium text-gray-900 dark:text-white">
+        {feature.name}
+      </h3>
+      <p className="mt-2 text-base text-gray-500 dark:text-gray-400">
+        {feature.description}
+      </p>
     </motion.div>
   );
 }
@@ -87,8 +110,8 @@ function CTA({ isAuthenticated }: { isAuthenticated: boolean }) {
           size="lg"
           className="mt-8 bg-white text-blue-600 hover:bg-blue-50 text-lg"
         >
-          <Link href={isAuthenticated ? '/tasks' : '/signup'}>
-            {isAuthenticated ? 'Go to Dashboard' : 'Get Started for Free'}
+          <Link href={isAuthenticated ? "/tasks" : "/signup"}>
+            {isAuthenticated ? "Go to Dashboard" : "Get Started for Free"}
           </Link>
         </Button>
       </div>
@@ -99,7 +122,7 @@ function CTA({ isAuthenticated }: { isAuthenticated: boolean }) {
 // ---------- HomePage ----------
 export default function HomePage() {
   const { data: _session, status } = useSession();
-  const isAuthenticated = status === 'authenticated';
+  const isAuthenticated = status === "authenticated";
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-gray-50 to-white dark:from-gray-900 dark:to-gray-800">
@@ -122,7 +145,8 @@ export default function HomePage() {
             transition={{ duration: 0.5, delay: 0.1 }}
             className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto mb-8"
           >
-            TaskFlow helps you stay organized and get more done. Your tasks are safe, synced, and accessible everywhere.
+            TaskFlow helps you stay organized and get more done. Your tasks are
+            safe, synced, and accessible everywhere.
           </motion.p>
           <motion.div
             variants={fadeUp}

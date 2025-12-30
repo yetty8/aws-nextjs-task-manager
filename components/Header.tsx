@@ -1,18 +1,23 @@
-'use client';
+"use client";
 
-import { FC, useEffect, useState } from 'react';
-import { useTheme } from 'next-themes';
-import { SunIcon, MoonIcon, Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePathname } from 'next/navigation';
-import { useSession, signOut } from 'next-auth/react';
-import Link from 'next/link';
-import { Button } from '@/components/ui/button';
-import { cn } from '@/lib/utils';
-import NavButton from '@/components/NavButton';
-import LoginForm from '@/components/auth/LoginForm';
-import SignupForm from '@/components/auth/SignupForm';
+import { FC, useEffect, useState } from "react";
+import { useTheme } from "next-themes";
+import {
+  SunIcon,
+  MoonIcon,
+  Bars3Icon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+import { usePathname } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import { cn } from "@/lib/utils";
+import NavButton from "@/components/NavButton";
+import LoginForm from "@/components/auth/LoginForm";
+import SignupForm from "@/components/auth/SignupForm";
 
-type Theme = 'light' | 'dark' | 'system';
+type Theme = "light" | "dark" | "system";
 
 interface NavItem {
   label: string;
@@ -20,9 +25,9 @@ interface NavItem {
 }
 
 const NAV_ITEMS: readonly NavItem[] = [
-  { label: 'Home', href: '/' },
-  { label: 'Tasks', href: '/tasks' },
-  { label: 'About', href: '/about' },
+  { label: "Home", href: "/" },
+  { label: "Tasks", href: "/tasks" },
+  { label: "About", href: "/about" },
 ];
 
 const Header: FC = () => {
@@ -30,8 +35,8 @@ const Header: FC = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [showLogin, setShowLogin] = useState(false);
   const [showSignup, setShowSignup] = useState(false);
-  const { theme = 'light', setTheme } = useTheme() as { 
-    theme: Theme; 
+  const { theme = "light", setTheme } = useTheme() as {
+    theme: Theme;
     setTheme: (theme: Theme) => void;
   };
   const { data: session, status } = useSession();
@@ -43,12 +48,12 @@ const Header: FC = () => {
     try {
       await signOut({ redirect: false });
     } catch (error) {
-      console.error('Logout error:', error);
+      console.error("Logout error:", error);
     }
   };
 
-  const isAuthenticated = status === 'authenticated';
-  const isLoading = status === 'loading';
+  const isAuthenticated = status === "authenticated";
+  const isLoading = status === "loading";
 
   if (!mounted) return <div className="h-16" aria-hidden="true" />;
 
@@ -89,13 +94,13 @@ const Header: FC = () => {
                       {session?.user?.name?.charAt(0).toUpperCase()}
                     </div>
                     <span className="text-sm font-medium text-gray-700 dark:text-gray-300">
-                      Hi, {session?.user?.name?.split(' ')[0] || 'User'}
+                      Hi, {session?.user?.name?.split(" ")[0] || "User"}
                     </span>
                   </div>
-                  <Button 
-                    onClick={handleLogout} 
-                    variant="destructive" 
-                    size="sm" 
+                  <Button
+                    onClick={handleLogout}
+                    variant="destructive"
+                    size="sm"
                     disabled={isLoading}
                   >
                     Logout
@@ -103,17 +108,17 @@ const Header: FC = () => {
                 </div>
               ) : (
                 <>
-                  <Button 
-                    variant="outline" 
-                    size="sm" 
-                    onClick={() => setShowLogin(true)} 
+                  <Button
+                    variant="outline"
+                    size="sm"
+                    onClick={() => setShowLogin(true)}
                     disabled={isLoading}
                   >
                     Login
                   </Button>
-                  <Button 
-                    size="sm" 
-                    onClick={() => setShowSignup(true)} 
+                  <Button
+                    size="sm"
+                    onClick={() => setShowSignup(true)}
                     disabled={isLoading}
                   >
                     Sign Up
@@ -123,10 +128,14 @@ const Header: FC = () => {
               <Button
                 variant="ghost"
                 size="icon"
-                onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-                aria-label={`Switch to ${theme === 'dark' ? 'light' : 'dark'} mode`}
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
               >
-                {theme === 'dark' ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+                {theme === "dark" ? (
+                  <SunIcon className="h-5 w-5" />
+                ) : (
+                  <MoonIcon className="h-5 w-5" />
+                )}
               </Button>
             </div>
           </div>
@@ -138,9 +147,13 @@ const Header: FC = () => {
             className="md:hidden"
             onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
             aria-expanded={mobileMenuOpen}
-            aria-label={mobileMenuOpen ? 'Close menu' : 'Open menu'}
+            aria-label={mobileMenuOpen ? "Close menu" : "Open menu"}
           >
-            {mobileMenuOpen ? <XMarkIcon className="h-6 w-6" /> : <Bars3Icon className="h-6 w-6" />}
+            {mobileMenuOpen ? (
+              <XMarkIcon className="h-6 w-6" />
+            ) : (
+              <Bars3Icon className="h-6 w-6" />
+            )}
           </Button>
         </div>
 
@@ -177,12 +190,18 @@ const Header: FC = () => {
 
       {/* Modals */}
       {showLogin && (
-        <AuthModal title="Login to your account" onClose={() => setShowLogin(false)}>
+        <AuthModal
+          title="Login to your account"
+          onClose={() => setShowLogin(false)}
+        >
           <LoginForm onSuccess={() => setShowLogin(false)} />
         </AuthModal>
       )}
       {showSignup && (
-        <AuthModal title="Create an account" onClose={() => setShowSignup(false)}>
+        <AuthModal
+          title="Create an account"
+          onClose={() => setShowSignup(false)}
+        >
           <SignupForm
             onSuccess={() => {
               setShowSignup(false);
@@ -204,7 +223,7 @@ interface AuthModalProps {
 
 const AuthModal: FC<AuthModalProps> = ({ title, onClose, children }) => {
   return (
-    <div 
+    <div
       className="fixed inset-0 z-50 bg-black/50 flex items-center justify-center p-4"
       onClick={(e) => e.target === e.currentTarget && onClose()}
     >

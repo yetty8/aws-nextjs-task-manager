@@ -1,13 +1,13 @@
-'use client';
+"use client";
 
-import { useState, useEffect } from 'react';
-import { signIn, useSession } from 'next-auth/react';
-import { useRouter, useSearchParams } from 'next/navigation';
-import Link from 'next/link';
+import { useState, useEffect } from "react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter, useSearchParams } from "next/navigation";
+import Link from "next/link";
 
 export default function LoginForm() {
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
@@ -16,8 +16,8 @@ export default function LoginForm() {
 
   // Redirect if already logged in
   useEffect(() => {
-    if (status === 'authenticated') {
-      const callbackUrl = searchParams.get('callbackUrl') || '/tasks';
+    if (status === "authenticated") {
+      const callbackUrl = searchParams.get("callbackUrl") || "/tasks";
       router.push(callbackUrl);
     }
   }, [status, router, searchParams]);
@@ -28,8 +28,8 @@ export default function LoginForm() {
     setError(null);
 
     try {
-      const callbackUrl = searchParams.get('callbackUrl') || '/tasks';
-      const result = await signIn('credentials', {
+      const callbackUrl = searchParams.get("callbackUrl") || "/tasks";
+      const result = await signIn("credentials", {
         redirect: false,
         email,
         password,
@@ -37,7 +37,7 @@ export default function LoginForm() {
       });
 
       if (result?.error) {
-        setError('Invalid email or password');
+        setError("Invalid email or password");
         return;
       }
 
@@ -46,14 +46,14 @@ export default function LoginForm() {
         window.location.href = result.url;
       }
     } catch (error) {
-      console.error('Login error:', error);
-      setError('An error occurred. Please try again.');
+      console.error("Login error:", error);
+      setError("An error occurred. Please try again.");
     } finally {
       setIsLoading(false);
     }
   };
 
-  if (status === 'loading' || status === 'authenticated') {
+  if (status === "loading" || status === "authenticated") {
     return (
       <div className="min-h-screen flex items-center justify-center">
         <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
@@ -127,7 +127,7 @@ export default function LoginForm() {
               disabled={isLoading}
               className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 disabled:opacity-50 disabled:cursor-not-allowed"
             >
-              {isLoading ? 'Signing in...' : 'Sign in'}
+              {isLoading ? "Signing in..." : "Sign in"}
             </button>
           </div>
         </form>
