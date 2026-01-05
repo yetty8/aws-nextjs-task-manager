@@ -8,6 +8,7 @@ import {
   ConfirmForgotPasswordCommand,
 } from "@aws-sdk/client-cognito-identity-provider";
 
+// Initialize Cognito client
 const client = new CognitoIdentityProviderClient({
   region: process.env.NEXT_PUBLIC_AWS_REGION,
   credentials: {
@@ -17,19 +18,14 @@ const client = new CognitoIdentityProviderClient({
 });
 
 const clientId = process.env.NEXT_PUBLIC_COGNITO_CLIENT_ID!;
-const userPoolId = process.env.NEXT_PUBLIC_COGNITO_USER_POOL_ID!;
 
+// Sign up a new user
 export async function signUp(email: string, password: string) {
   const command = new SignUpCommand({
     ClientId: clientId,
     Username: email,
     Password: password,
-    UserAttributes: [
-      {
-        Name: "email",
-        Value: email,
-      },
-    ],
+    UserAttributes: [{ Name: "email", Value: email }],
   });
 
   try {
@@ -40,6 +36,7 @@ export async function signUp(email: string, password: string) {
   }
 }
 
+// Confirm a user's signup with a code
 export async function confirmSignUp(email: string, code: string) {
   const command = new ConfirmSignUpCommand({
     ClientId: clientId,
@@ -55,14 +52,12 @@ export async function confirmSignUp(email: string, code: string) {
   }
 }
 
+// Sign in a user
 export async function signIn(email: string, password: string) {
   const command = new InitiateAuthCommand({
     AuthFlow: "USER_PASSWORD_AUTH",
     ClientId: clientId,
-    AuthParameters: {
-      USERNAME: email,
-      PASSWORD: password,
-    },
+    AuthParameters: { USERNAME: email, PASSWORD: password },
   });
 
   try {
@@ -74,6 +69,7 @@ export async function signIn(email: string, password: string) {
   }
 }
 
+// Resend confirmation code
 export async function resendConfirmationCode(email: string) {
   const command = new ResendConfirmationCodeCommand({
     ClientId: clientId,
@@ -88,6 +84,7 @@ export async function resendConfirmationCode(email: string) {
   }
 }
 
+// Forgot password
 export async function forgotPassword(email: string) {
   const command = new ForgotPasswordCommand({
     ClientId: clientId,
@@ -102,6 +99,7 @@ export async function forgotPassword(email: string) {
   }
 }
 
+// Confirm forgot password
 export async function confirmForgotPassword(
   email: string,
   code: string,

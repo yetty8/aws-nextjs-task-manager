@@ -8,11 +8,9 @@ import {
   Bars3Icon,
   XMarkIcon,
 } from "@heroicons/react/24/outline";
-import { usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
-import { cn } from "@/lib/utils";
 import NavButton from "@/components/NavButton";
 import LoginForm from "@/components/auth/LoginForm";
 import SignupForm from "@/components/auth/SignupForm";
@@ -40,7 +38,6 @@ const Header: FC = () => {
     setTheme: (theme: Theme) => void;
   };
   const { data: session, status } = useSession();
-  const pathname = usePathname();
 
   useEffect(() => setMounted(true), []);
 

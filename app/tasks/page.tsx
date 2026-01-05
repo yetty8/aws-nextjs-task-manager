@@ -14,19 +14,20 @@ const Tasks = dynamic(() => import("@/components/Tasks"), {
         <div
           key={i}
           className="h-16 bg-gray-100 dark:bg-gray-800 rounded-lg animate-pulse"
-        ></div>
+        />
       ))}
     </div>
   ),
 });
 
 export default function TasksPage() {
-  const { data: session, status } = useSession();
+  // ✅ FIX: remove unused `session`
+  const { status } = useSession();
 
   if (status === "loading") {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
       </div>
     );
   }

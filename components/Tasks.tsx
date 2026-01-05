@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from "react";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import { Plus, Loader2, Trash2, Check, Edit } from "lucide-react";
+import { Loader2, Trash2, Check, Edit } from "lucide-react"; // ✅ removed unused Plus
 
 interface Task {
   id: string;
@@ -108,10 +108,7 @@ export default function Tasks() {
   };
 
   const toggleTaskCompletion = async (task: Task) => {
-    if (!task?.id) {
-      console.error("Cannot toggle task: No task ID");
-      return;
-    }
+    if (!task?.id) return;
 
     const taskId = task.id;
     const previousTasks = [...tasks];
@@ -151,14 +148,9 @@ export default function Tasks() {
   };
 
   const deleteTask = async (id: string) => {
-    if (!id) {
-      console.error("Cannot delete task: No task ID");
-      return;
-    }
+    if (!id) return;
 
-    if (!window.confirm("Are you sure you want to delete this task?")) {
-      return;
-    }
+    if (!window.confirm("Are you sure you want to delete this task?")) return;
 
     const previousTasks = [...tasks];
     setTasks((prev) => prev.filter((task) => task.id !== id));

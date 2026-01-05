@@ -13,8 +13,9 @@ interface Task {
 
 export default function EditTask() {
   const router = useRouter();
-  const { id } = useParams();
-  const { data: session, status } = useSession();
+  const { id } = useParams<{ id: string }>();
+  const { status } = useSession();
+
   const [task, setTask] = useState<Task | null>(null);
   const [loading, setLoading] = useState(true);
   const [saving, setSaving] = useState(false);
@@ -26,6 +27,8 @@ export default function EditTask() {
 
   // Fetch task data
   useEffect(() => {
+    if (status === "loading") return;
+
     if (status === "unauthenticated") {
       router.push("/login");
       return;
@@ -43,7 +46,7 @@ export default function EditTask() {
           throw new Error("Failed to fetch task");
         }
 
-        const data = await res.json();
+        const data: Task = await res.json();
         setTask(data);
         setFormData({
           title: data.title,
@@ -82,9 +85,9 @@ export default function EditTask() {
       }
 
       router.push("/tasks");
-    } catch (err: any) {
-      console.error("Update error:", err);
-      alert(err?.message || "Failed to update task. Please try again.");
+    } catch (error: any) {
+      console.error("Update error:", error);
+      alert(error?.message || "Failed to update task. Please try again.");
     } finally {
       setSaving(false);
     }
@@ -94,19 +97,17 @@ export default function EditTask() {
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
     const { name, value, type } = e.target as HTMLInputElement;
-    const checked =
-      type === "checkbox" ? (e.target as HTMLInputElement).checked : undefined;
 
     setFormData((prev) => ({
       ...prev,
-      [name]: type === "checkbox" ? checked : value,
+      [name]: type === "checkbox" ? (e.target as HTMLInputElement).checked : value,
     }));
   };
 
   if (status === "loading" || loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin"></div>
+        <div className="w-8 h-8 border-4 border-blue-500 border-t-transparent rounded-full animate-spin" />
       </div>
     );
   }
@@ -122,6 +123,7 @@ export default function EditTask() {
   return (
     <div className="max-w-2xl p-4 mx-auto">
       <h1 className="mb-6 text-2xl font-bold">Edit Task</h1>
+
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
           <label
@@ -131,9 +133,9 @@ export default function EditTask() {
             Title *
           </label>
           <input
-            type="text"
             id="title"
             name="title"
+            type="text"
             value={formData.title}
             onChange={handleChange}
             required
@@ -160,18 +162,16 @@ export default function EditTask() {
 
         <div className="flex items-center">
           <input
-            type="checkbox"
             id="completed"
             name="completed"
+            type="checkbox"
             checked={formData.completed}
-            onChange={(e) =>
-              setFormData((prev) => ({ ...prev, completed: e.target.checked }))
-            }
+            onChange={handleChange}
             className="w-4 h-4 text-blue-600 border-gray-300 rounded focus:ring-blue-500"
           />
           <label
             htmlFor="completed"
-            className="block ml-2 text-sm text-gray-700"
+            className="ml-2 text-sm text-gray-700"
           >
             Mark as completed
           </label>
@@ -181,11 +181,12 @@ export default function EditTask() {
           <button
             type="button"
             onClick={() => router.push("/tasks")}
-            className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
             disabled={saving}
+            className="px-4 py-2 text-gray-700 bg-gray-200 rounded hover:bg-gray-300"
           >
             Cancel
           </button>
+
           <button
             type="submit"
             disabled={saving}

@@ -5,7 +5,11 @@ import { signIn, useSession } from "next-auth/react";
 import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 
-export default function LoginForm() {
+interface LoginFormProps {
+  onSuccess?: () => void; // ✅ optional callback
+}
+
+export default function LoginForm({ onSuccess }: LoginFormProps) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
@@ -41,7 +45,10 @@ export default function LoginForm() {
         return;
       }
 
-      // If no error, the session will be updated and the useEffect will handle the redirect
+      // If login succeeds, call the optional onSuccess callback
+      if (onSuccess) onSuccess();
+
+      // fallback redirect in case
       if (result?.url) {
         window.location.href = result.url;
       }
@@ -56,7 +63,7 @@ export default function LoginForm() {
   if (status === "loading" || status === "authenticated") {
     return (
       <div className="min-h-screen flex items-center justify-center">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-blue-500" />
       </div>
     );
   }
