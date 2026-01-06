@@ -93,19 +93,19 @@ export default [
     },
   },
   // Config files
-  {
-    files: ["next.config.js", "tailwind.config.js"],
-    languageOptions: {
-      globals: {
-        ...globals.node,
-      },
-    },
-    rules: {
-      "@typescript-eslint/no-var-requires": "off",
-      "no-undef": "off",
-      "no-unused-vars": "off",
+{
+  files: ["**/*.mjs"],
+  languageOptions: {
+    ecmaVersion: "latest",
+    sourceType: "module",
+    globals: {
+      ...globals.node,
     },
   },
+  rules: {
+    "no-console": "off",
+  },
+},
   // Ignore patterns
   {
     ignores: [
