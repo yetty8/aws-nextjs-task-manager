@@ -122,6 +122,8 @@ const Header: FC = () => {
                   </Button>
                 </>
               )}
+
+              {/* Dark Mode Toggle (Desktop) */}
               <Button
                 variant="ghost"
                 size="icon"
@@ -180,6 +182,17 @@ const Header: FC = () => {
                   Logout
                 </Button>
               )}
+
+              {/* Dark Mode Toggle (Mobile) */}
+              <Button
+                variant="ghost"
+                size="icon"
+                className="mt-2 self-start"
+                onClick={() => setTheme(theme === "dark" ? "light" : "dark")}
+                aria-label={`Switch to ${theme === "dark" ? "light" : "dark"} mode`}
+              >
+                {theme === "dark" ? <SunIcon className="h-5 w-5" /> : <MoonIcon className="h-5 w-5" />}
+              </Button>
             </nav>
           </div>
         )}
